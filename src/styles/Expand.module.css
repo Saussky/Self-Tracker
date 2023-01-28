@@ -1,0 +1,12 @@
+.expand {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.8s ease-out;
+    font-size: 1rem;
+    text-align: left;
+    margin-top: 1.5vh;
+}
+
+.expand.expanded {
+    max-height: fit-content; /* or any other value */
+}
