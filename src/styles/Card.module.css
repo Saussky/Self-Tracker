@@ -1,0 +1,12 @@
+.card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 10vh;
+    margin-right: 10vw;
+}
+
+.info {
+    width: 10vw;
+    margin-top: 20vh;
+}

@@ -1,0 +1,19 @@
+.banner {
+    position: relative;
+    width: 100vw;
+    height: 25vh;
+}
+
+.navbar {
+    width: 100vw;
+    height: 5vh;
+    background-color: blue;
+    color: white;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.navOptions {
+    margin: 1.5vh 0 0 5vw
+}
