@@ -7,8 +7,8 @@ export default function Header() {
 
     return (
         <div className={styles.header}>
-            <Banner />
             <Navbar />
+            <Banner />
         </div>
     )
 }
