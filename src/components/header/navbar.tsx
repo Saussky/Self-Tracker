@@ -12,7 +12,7 @@ export default function Navbar() {
                 <Link href="/general">General</Link>
              </div>
              <div className={styles.navOptions}>
-                <Link href="/gym">Gym</Link>
+                <Link href="/gym">Workout</Link>
              </div>
              <div className={styles.navOptions}>
                 <Link href="/gym">Spending</Link>

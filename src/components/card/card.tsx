@@ -5,16 +5,18 @@ import arrow from "../../../public/images/svg/arrow.svg"
 
 export default function Card() {
     return (
-        <>
-            <Image
-                src={arrow}
-                alt="arrow"
-                width={200}
-                height={60}
-            />
+        <div className={styles.container}>
+            <div className={styles.arrowLeft}>
+                <Image
+                    src={arrow}
+                    alt="arrow"
+                    width={40}
+                    height={30}
+                />
+            </div>
 
             <div className={styles.card}>
-                <div className={styles.image}>
+                <div className={styles.cardImage}>
                     <Image
                         src={image}
                         alt="stuff you can track"
@@ -22,13 +24,23 @@ export default function Card() {
                         height={500}
                     />
                 </div>
-                <div className={styles.info}>
+                <div className={styles.cardInfo}>
                     <h2>
                         Track yo'self before you wreck yo'self
                     </h2>
                 </div>
+
             </div>
 
-        </>
+            <div className={styles.arrowRight}>
+                    <Image
+                        src={arrow}
+                        alt="arrow"
+                        width={40}
+                        height={30}
+                    />
+                </div>
+
+        </div>
     )
 }

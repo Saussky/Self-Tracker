@@ -10,6 +10,7 @@ export default function Home() {
     <>
       <Head>
         <title>Tracker</title>
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,500,700' rel='stylesheet' type='text/css'></link>
         <meta property="og:title" content="My page title" key="title" />
       </Head>
 

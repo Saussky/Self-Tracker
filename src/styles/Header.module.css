@@ -1,21 +1,23 @@
 .banner {
     position: relative;
     width: 100vw;
-    height: 25vh;
+    height: 11vh;
 }
 
 .navbar {
     width: 100vw;
-    height: 5vh;
-    background-image: linear-gradient(#57CC99, #38A3A5 );
-    color: black;
+    height: 3vh;
+
+    background-color: white;
+    border-bottom: solid lightgray;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
 
     display: flex;
     flex-direction: row;
     justify-content: right;
-    
 }
 
 .navOptions {
-    margin: 1.5vh 1vw 0 4vw
+    margin: 0.55vh 1vw 0 1vw;
+    font-weight: 500;
 }
