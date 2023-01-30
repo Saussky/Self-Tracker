@@ -6,11 +6,12 @@ import arrow from "../../../public/images/svg/arrow.svg"
 export default function Card() {
     return (
         <div className={styles.container}>
-            <div className={styles.arrowLeft}>
+            <div>
                 <Image
+                    className={styles.arrowLeft}
                     src={arrow}
                     alt="arrow"
-                    width={40}
+                    width={34}
                     height={30}
                 />
             </div>
@@ -25,22 +26,22 @@ export default function Card() {
                     />
                 </div>
                 <div className={styles.cardInfo}>
-                    <h2>
-                        Track yo'self before you wreck yo'self
-                    </h2>
+                    <h2>Track yo'self</h2>
+                    <h2>before you </h2>
+                    <h2> wreck yo'self</h2>
                 </div>
-
             </div>
 
-            <div className={styles.arrowRight}>
-                    <Image
-                        src={arrow}
-                        alt="arrow"
-                        width={40}
-                        height={30}
-                    />
-                </div>
+            <div >
+                <Image
+                    className={styles.arrowRight}
+                    src={arrow}
+                    alt="arrow"
+                    width={30}
+                    height={30}
+                />
+            </div>
 
-        </div>
+        </div >
     )
 }
