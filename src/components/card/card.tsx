@@ -1,4 +1,4 @@
-import image from "../../../public/images/stuff.png"
+import image from "../../../public/images/hobbies.png"
 import Image from "next/image"
 import styles from "../../styles/Card.module.css"
 import arrow from "../../../public/images/svg/arrow.svg"
@@ -22,13 +22,13 @@ export default function Card() {
                         src={image}
                         alt="stuff you can track"
                         width={500}
-                        height={500}
+                        height={450}
                     />
                 </div>
                 <div className={styles.cardInfo}>
                     <h2>Track yo'self</h2>
-                    <h2>before you </h2>
-                    <h2> wreck yo'self</h2>
+                    <h2>before you</h2>
+                    <h2>wreck yo'self</h2>
                 </div>
             </div>
 

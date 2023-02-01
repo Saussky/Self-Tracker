@@ -18,6 +18,7 @@
     justify-content: center;
 
     width: 40vw;
+    height: 38vh;
     margin-top: 10vh;
 
     border-radius: 10px;
@@ -27,8 +28,8 @@
 }
 
 .cardImage {
-    background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
     width: 60%;
+    height: 85%;
 }
 
 .cardInfo {

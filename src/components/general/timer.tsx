@@ -20,11 +20,11 @@ export default function Timer() {
     // Takes in seconds as a time and outputs a string with hours and minutes
     const formatTime = (time: number): string => {
         // Every skipped 5 or back 5 minutes are calculated here
-        const timeBonus = time + bonus
+        const timeWithBonus = time + bonus
 
-        const hours: number = Math.floor(timeBonus / 3600);
-        const minutes: number = Math.floor((timeBonus / 60) % 60);
-        const seconds: number = Math.floor(timeBonus % 60)
+        const hours: number = Math.floor(timeWithBonus / 3600);
+        const minutes: number = Math.floor((timeWithBonus / 60) % 60);
+        const seconds: number = Math.floor(timeWithBonus % 60)
 
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
@@ -81,7 +81,7 @@ export default function Timer() {
         setStartTime(DateTime.local().toSeconds())
     }
 
-    // Skips the timer forward five minutes (through formatTime function)
+    // Skips the timer forward five minutes (through formatTime() function)
     const forwardFive = () => {
         setBonus(bonus + 300)
     }
