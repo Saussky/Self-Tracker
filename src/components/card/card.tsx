@@ -17,18 +17,21 @@ export default function Card() {
             </div>
 
             <div className={styles.card}>
-                <div className={styles.cardImage}>
+                <div className={styles.imageContainer}>
                     <Image
                         src={image}
                         alt="stuff you can track"
-                        width={500}
-                        height={450}
+                        fill
+                        className={styles.cardImage}
                     />
                 </div>
                 <div className={styles.cardInfo}>
-                    <h2>Track yo'self</h2>
+                    <h2>
+                        Get paid to
+                         track your data!</h2>
+                    {/* <h2>Track yo'self</h2>
                     <h2>before you</h2>
-                    <h2>wreck yo'self</h2>
+                    <h2>wreck yo'self</h2> */}
                 </div>
             </div>
 

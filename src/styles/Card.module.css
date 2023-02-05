@@ -27,19 +27,24 @@
     overflow: hidden;
 }
 
-.cardImage {
+.imageContainer {
     width: 60%;
-    height: 85%;
+}
+
+.cardImage {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .cardInfo {
     width: 40%;
+    font-size: 1.5vh;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
 }
 
 .arrowRight {
