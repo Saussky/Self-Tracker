@@ -1,6 +1,6 @@
 import image from "../../../public/images/hobbies.png"
 import Image from "next/image"
-import styles from "../../styles/Card.module.css"
+import styles from "../../styles/general/Card.module.css"
 import arrow from "../../../public/images/svg/arrow.svg"
 
 export default function Card() {

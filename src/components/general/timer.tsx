@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { DateTime } from 'luxon'
-import styles from '../../styles/Box.module.css'
+import styles from '../../styles/general/Box.module.css'
 import Expand from './expand'
 
 export default function Timer() {

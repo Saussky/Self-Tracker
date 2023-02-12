@@ -16,7 +16,7 @@ export default function Navbar() {
             <Link href="/general">General</Link>
          </div>
          <div className={styles.navOptions}>
-            <Link href="/gym">Workout</Link>
+            <Link href="/workout">Workout</Link>
          </div>
          <div className={styles.navOptions}>
             <Link href="/gym">Spending</Link>

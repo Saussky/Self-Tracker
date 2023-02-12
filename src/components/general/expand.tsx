@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from '../../styles/Expand.module.css'
+import styles from '../../styles/general/Expand.module.css'
 
 export default function Expand() {
 

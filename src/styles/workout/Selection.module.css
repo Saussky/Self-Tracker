@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10vh auto;
+
+    border: 2px solid black;
+    border-radius: 25px;
+    width: 60vw;
+    height: 50vh;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.heading {
+    margin: -10vh 0 5vh;
+    text-align: center;
+}
+
+.choice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 10vw;
+    height: 5vh;
+
+    border: 2px solid black;
+    border-radius: 25px;
+    font-size: larger;
+}
+
+.addChoice {
+    margin-top: 10vh;
+}

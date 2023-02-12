@@ -1,8 +1,9 @@
 import Head from "next/head"
-import Volume from "../components/gym/volume"
+import Gym from "../components/workout/gym/gym"
+import Selection from "../components/workout/selection"
 import Header from "../components/header/header"
 
-export default function Gym() {
+export default function Workout() {
     return (
         <>
             <Head>
@@ -11,7 +12,7 @@ export default function Gym() {
             </Head>
             
             <Header />
-            <Volume />
+            <Selection />
 
         </>
     )

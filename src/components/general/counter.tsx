@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from '../../styles/Box.module.css'
+import styles from '../../styles/general/Box.module.css'
 import Expand from './expand'
 
 export default function Counter() {

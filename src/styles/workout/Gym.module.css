@@ -1,0 +1,68 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5vh auto;
+
+    border: 2px solid black;
+    border-radius: 25px;
+    width: 60vw;
+    height: 70vh;
+
+    transition: 3s;
+}
+
+.heading {
+    font-size: 2.5vh;
+    font-weight: 600;
+}
+
+.category,
+.exercise,
+.reps,
+.weight,
+.submission {
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 3vh 0;
+}
+
+.radioGroup,
+.exerciseSelect,
+.repDisplay,
+.weightDisplay {
+    margin-top: 1.5vh;
+    font-size: 2vh;
+}
+
+.radioGroup {
+    display: flex;
+    flex-direction: row;
+}
+
+.radioOptions {
+    margin-right: 1vw;
+}
+
+.buttonChange {
+    width:  3vw;
+    height: 3vh;
+    margin: 0 3vw;
+}
+
+.submission {
+    margin: 5vh 0;
+}
+
+.buttonSubmit {
+    width: 10vw;
+    height: 20vh;
+}
+
+.previousSubmission {
+    margin-top: 5vh;
+}
