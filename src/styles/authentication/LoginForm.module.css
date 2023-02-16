@@ -1,0 +1,27 @@
+.loginForm {
+    width: fit-content;
+    margin: auto auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid black;
+    overflow: none;
+}
+
+.submitButton {
+    margin: auto;
+    width: 10vw;
+}
+
+.email .password {
+    width: 10vw;
+    margin: 20px;
+}
+
+.email input {
+    width: 10vw;
+}
+
+.password input {
+    width: 9vw;
+}

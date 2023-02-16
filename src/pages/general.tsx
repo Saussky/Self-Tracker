@@ -4,26 +4,13 @@ import GeneralContainer from "../components/general/general"
 import Header from "../components/header/header"
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from "next/router";
+import user from '../../lib/db/users';
 
 
 
-export default function General() {
-    const { user, error, isLoading } = useUser();
-    const router = useRouter();
+export default function General({ data }: any) {
+    console.log(data)
 
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-  
-    if (error) {
-      return <div>Oops... something went wrong: {error.message}</div>;
-    }
-  
-    if (!user) {
-      router.push('/api/auth/login');
-      return null;
-    }
-    
     return (
         <>
             <Head>
@@ -35,4 +22,16 @@ export default function General() {
             <GeneralContainer />
         </>
     )
+}
+
+export async function getServerSideProps(context: any) {
+  const result = await user.getUser('greg@ory.com');
+  
+  const data = result.rows[0];
+
+  return {
+    props: {
+      data,
+    },
+  };
 }

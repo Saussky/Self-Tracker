@@ -2,6 +2,7 @@ import Pool from "./pool";
 import config from "./config"
 import { QueryResult } from 'pg';
 
+
 export class UserRepo {
   pool: Pool;
 
