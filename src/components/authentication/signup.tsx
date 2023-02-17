@@ -39,7 +39,7 @@ export default function SignUp(props: any) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password, age, country}),
         });
 
         if (response.status === 200) {
@@ -66,7 +66,7 @@ export default function SignUp(props: any) {
             </label>
             <label className={styles.password}>
                 Age:
-                <input type="number" value={age} onChange={handlePasswordChange} />
+                <input type="number" value={age} onChange={handleAgeChange} />
             </label>
             <label className={styles.password}>
                 Country:
