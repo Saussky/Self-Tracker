@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import styles from "../../styles/authentication/LoginForm.module.css"
-import SignUp from './signup';
-import users from "../../../lib/db/users"
 
-interface LoginFormProps {
-    // todo
-}
 
-export default function LoginForm(props: any) {
+export default function SignUp(props: any) {
     const { method, setMethod } = props
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    
+    const [age, setAge] = useState<number>()
+    const [country, setCountry] = useState<string>('')
+
 
     function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
         setEmail(event.target.value);
@@ -21,6 +19,14 @@ export default function LoginForm(props: any) {
         setPassword(event.target.value);
     }
 
+    function handleAgeChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setAge(Number(event.target.value));
+    }
+
+    function handleCountryChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setCountry(event.target.value)
+    }
+
     function handleMethodChange(event: React.ChangeEvent<HTMLInputElement>) {
         setMethod(event.target.value)
     }
@@ -28,7 +34,7 @@ export default function LoginForm(props: any) {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('/api/auth/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +43,7 @@ export default function LoginForm(props: any) {
         });
 
         if (response.status === 200) {
-            console.log('ahhh')
+            console.log('weee')
             // TODO: Redirect to dashboard or other authorized content
         } else {
             const data = await response.json();
@@ -58,9 +64,15 @@ export default function LoginForm(props: any) {
                 Password:
                 <input type="password" value={password} onChange={handlePasswordChange} />
             </label>
+            <label className={styles.password}>
+                Age:
+                <input type="number" value={age} onChange={handlePasswordChange} />
+            </label>
+            <label className={styles.password}>
+                Country:
+                <input type="country" value={country} onChange={handleCountryChange} />
+            </label>
 
-            {method === 'signup' && <SignUp />}
-            
             <div className={styles.method}>
                 <label>
                     <input
@@ -83,8 +95,8 @@ export default function LoginForm(props: any) {
             </div>
 
             <button type="submit" className={styles.submitButton}>
-                {method === 'login' ? 'Log in' : 'Sign up'}
+                Sign Up
             </button>
         </form>
-    );
+    )
 }

@@ -1,4 +1,5 @@
 import Head from "next/head"
+import Authentication from "../components/authentication/authentication"
 import LoginForm from "../components/authentication/login"
 
 export default function Login() {
@@ -9,7 +10,7 @@ export default function Login() {
                 <meta property="og:title" content="My page title" key="title" />
             </Head>
             
-            <LoginForm />
+            <Authentication />
 
         </>
     )
