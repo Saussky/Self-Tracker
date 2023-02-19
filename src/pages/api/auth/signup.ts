@@ -3,10 +3,10 @@ import users from '../../../../lib/db/users'
 
 export default async function signup(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { email, password, age, country } = req.body;
+    const { email, hashedPassword, age, country } = req.body;
 
     try {
-      const result = await users.createUser(email, password, age, country);
+      const result = await users.createUser(email, hashedPassword, age, country);
       res.status(200).json({ message: 'Account creation successful' });
     }
     catch (error) {

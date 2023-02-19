@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../styles/authentication/LoginForm.module.css"
+import { createHash } from "crypto"
 
 
 export default function SignUp(props: any) {
@@ -18,6 +19,9 @@ export default function SignUp(props: any) {
 
     function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
         setPassword(event.target.value);
+
+        const hashedPassword = createHash('sha256').update(password).digest('hex');
+        console.log('password ', hashedPassword)
     }
 
     function handleAgeChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -34,13 +38,16 @@ export default function SignUp(props: any) {
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        const hashedPassword = createHash('sha256').update(password).digest('hex');
+        console.log('password ', hashedPassword)
+        
 
         const response = await fetch('/api/auth/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password, age, country}),
+            body: JSON.stringify({ email, hashedPassword, age, country}),
         });
 
         if (response.status === 200) {

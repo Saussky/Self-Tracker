@@ -11,10 +11,7 @@ export class UserRepo {
   }
 
   async getUser(email: string): Promise<QueryResult> {
-    const sql = 'SELECT * FROM users WHERE email = $1';
-    const params = [email];
-
-    return this.pool.query(sql, params);
+    return this.pool.query('SELECT * FROM users WHERE email = $1', [email]);
   }
 
   async createUser(email: string, password: string, age: number, country: string): Promise<QueryResult> {

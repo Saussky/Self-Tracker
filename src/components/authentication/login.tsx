@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styles from "../../styles/authentication/LoginForm.module.css"
 import SignUp from './signup';
 import users from "../../../lib/db/users"
+import { createHash } from 'crypto'
+import router from 'next/router';
 
 interface LoginFormProps {
     // todo
@@ -27,17 +29,22 @@ export default function LoginForm(props: any) {
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        const hashedPassword = createHash('sha256').update(password).digest('hex');
+        
 
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, hashedPassword }),
         });
 
         if (response.status === 200) {
             console.log('ahhh')
+            const data = await response.json()
+            console.log(data.user)
+            router.push('/');
             // TODO: Redirect to dashboard or other authorized content
         } else {
             const data = await response.json();
