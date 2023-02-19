@@ -24,14 +24,14 @@ export default function General({ data }: any) {
     )
 }
 
-export async function getServerSideProps(context: any) {
-  const result = await user.getUser('greg@ory.com');
+// export async function getServerSideProps(context: any) {
+//   const result = await user.getUser('greg@ory.com');
   
-  const data = result.rows[0];
+//   const data = result.rows[0];
 
-  return {
-    props: {
-      data,
-    },
-  };
-}
+//   return {
+//     props: {
+//       data,
+//     },
+//   };
+// }

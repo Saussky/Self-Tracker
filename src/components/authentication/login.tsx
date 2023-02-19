@@ -41,7 +41,7 @@ export default function LoginForm(props: any) {
         });
 
         if (response.status === 200) {
-            console.log('ahhh')
+            console.log('logged in')
             const data = await response.json()
             console.log(data.user)
             router.push('/');
