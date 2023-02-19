@@ -9,6 +9,7 @@ export default function SignUp(props: any) {
     const [password, setPassword] = useState<string>('');
     const [age, setAge] = useState<number>()
     const [country, setCountry] = useState<string>('')
+    const [creationSuccessful, setCreationSuccesful] = useState<boolean>()
 
 
     function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -44,6 +45,7 @@ export default function SignUp(props: any) {
 
         if (response.status === 200) {
             console.log('weee')
+            setCreationSuccesful(true)
             // TODO: Redirect to dashboard or other authorized content
         } else {
             const data = await response.json();
@@ -97,6 +99,9 @@ export default function SignUp(props: any) {
             <button type="submit" className={styles.submitButton}>
                 Sign Up
             </button>
+
+            {creationSuccessful && 'Account Created!'}
+
         </form>
     )
 }

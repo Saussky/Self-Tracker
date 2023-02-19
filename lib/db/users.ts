@@ -18,8 +18,9 @@ export class UserRepo {
   }
 
   async createUser(email: string, password: string, age: number, country: string): Promise<QueryResult> {
+
     const verificationCode = "heythere"
-    const sql = 'INSERT INTO users (email, password, age, country, verification, verified) VALUES ($1, $2, $3, $4, $5)';
+    const sql = 'INSERT INTO users (email, password, age, country, verification, verified) VALUES ($1, $2, $3, $4, $5, $6)';
     const params = [email, password, age, country, verificationCode, false];
 
     return this.pool.query(sql, params);
