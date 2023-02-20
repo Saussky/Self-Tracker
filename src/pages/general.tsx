@@ -4,7 +4,7 @@ import GeneralContainer from "../components/general/general"
 import Header from "../components/header/header"
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from "next/router";
-import user from '../../lib/db/users';
+import user from '../../lib/db/authentication/users';
 
 
 

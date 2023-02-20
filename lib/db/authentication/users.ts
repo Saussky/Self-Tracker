@@ -1,5 +1,5 @@
-import Pool from "./pool";
-import config from "./config"
+import Pool from "../pool";
+import config from "../config"
 import { QueryResult } from 'pg';
 
 

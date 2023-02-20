@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import users from '../../../../lib/db/users'
+import users from '../../../../lib/db/authentication/users'
 
 export default async function signup(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {

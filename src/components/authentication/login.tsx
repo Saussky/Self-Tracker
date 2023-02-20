@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from "../../styles/authentication/LoginForm.module.css"
 import SignUp from './signup';
-import users from "../../../lib/db/users"
+import users from "../../../lib/db/authentication/users"
 import { createHash } from 'crypto'
 import router from 'next/router';
 
@@ -31,7 +31,6 @@ export default function LoginForm(props: any) {
         event.preventDefault();
         const hashedPassword = createHash('sha256').update(password).digest('hex');
         
-
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
@@ -43,9 +42,8 @@ export default function LoginForm(props: any) {
         if (response.status === 200) {
             console.log('logged in')
             const data = await response.json()
-            console.log(data.user)
+            document.cookie = `jwt=${data.token}; expires=${new Date(Date.now() + 3600000).toUTCString()}; path=/`;
             router.push('/');
-            // TODO: Redirect to dashboard or other authorized content
         } else {
             const data = await response.json();
             console.log(data.message);
