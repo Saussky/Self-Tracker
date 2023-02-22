@@ -13,9 +13,7 @@ export default function CreateTimer() {
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
-
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        console.log('token: ', token)
 
         const response = await fetch('/api/data/timers/post', {
             method: 'POST',
@@ -24,8 +22,6 @@ export default function CreateTimer() {
             },
             body: JSON.stringify({ name, token}),
         });
-
-        console.log(response.status)
 
         if (response.status === 200) {
             console.log('YES!')

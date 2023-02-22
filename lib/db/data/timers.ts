@@ -14,10 +14,7 @@ export class TimerRepo {
     this.pool = pool;
   }
 
-  async createTimer(
-    name: string,
-    userEmail: string,    
-  ): Promise<void> {
+  async createTimer(name: string, userEmail: string): Promise<void> {
     const sql =
       'INSERT INTO timer_info (name, user_email) VALUES ($1, $2)';
     const params = [name, userEmail];
@@ -25,7 +22,7 @@ export class TimerRepo {
     await this.pool.query(sql, params);
   }
 
-  async getTimersByUserEmail(userEmail: string): Promise<QueryResult> {
+  async getTimersByEmail(userEmail: string): Promise<QueryResult> {
     const sql = 'SELECT * FROM timer_info WHERE user_email = $1';
     const params = [userEmail];
 
@@ -34,7 +31,8 @@ export class TimerRepo {
 
 }
 
-const timers = new TimerRepo(new Pool(config.timers));
+const timers = new TimerRepo(new Pool(config.db));
+
 
 export default timers;
 

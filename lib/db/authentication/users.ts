@@ -25,6 +25,6 @@ export class UserRepo {
 }
 
 
-const user = new UserRepo(new Pool(config.users))
+const user = new UserRepo(new Pool(config.db))
 
 export default user

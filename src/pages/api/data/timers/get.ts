@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
-// import timers from '../../../../lib/db/timers';
+import timers from '../../../../../lib/db/data/timers';
 
-const jwtSecret = process.env.JWT_SECRET || 'moon';
+const jwtSecret = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'moon';
 
-export default async function handleTimersRequest(req: NextApiRequest, res: NextApiResponse) {
+export default async function getTimersRequest(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -15,12 +15,14 @@ export default async function handleTimersRequest(req: NextApiRequest, res: Next
   }
 
   try {
+
     const decodedToken = jwt.verify(token, jwtSecret) as { email: string };
     const { email } = decodedToken;
-    const userTimers = 'placeHolder'
-    // const userTimers = await timers.getUserTimers(email);
-    return res.status(200).json({ timers: userTimers });
+    const { rows: userTimers } = await timers.getTimersByEmail(email);
+    res.status(200).json({ timers: userTimers });
+
   } catch (error) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 }
+
