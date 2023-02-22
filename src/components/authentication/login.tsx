@@ -9,18 +9,38 @@ interface LoginFormProps {
     // todo
 }
 
+type LoginForm = {
+    email: string,
+    password: string
+}
+/*
+    const [formState, setFormState] = useState({
+        userId: '',
+        category: 'theft',
+        submissionDate: '',
+        injuries: '',
+        perpetrator: '',
+        perpetratorDescription: '',
+        dateNoticedMissing: '',
+        locationStolenFrom: '',
+        items: [],
+        backgroundOfEvent: '',
+        itemDescriptions: '',
+        howItHappened: ''
+    })
+*/
+
 export default function LoginForm(props: any) {
-    const { method, setMethod } = props
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    
+    const { method, setMethod } = props;
 
-    function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
-        setEmail(event.target.value);
-    }
+    const [formState, setFormState] = useState<LoginForm>({
+        email: '',
+        password: ''
+    })
 
-    function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
-        setPassword(event.target.value);
+    function handleFormChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target;
+        setFormState((prevState) => ({...prevState, [name]:value}))
     }
 
     function handleMethodChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -29,7 +49,8 @@ export default function LoginForm(props: any) {
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const hashedPassword = createHash('sha256').update(password).digest('hex');
+        const hashedPassword: string = createHash('sha256').update(formState.password).digest('hex');
+        const email: string = formState.email
         
         const response = await fetch('/api/auth/login', {
             method: 'POST',
@@ -57,11 +78,11 @@ export default function LoginForm(props: any) {
         <form onSubmit={handleSubmit} className={styles.loginForm}>
             <label className={styles.email}>
                 Email:
-                <input type="email" value={email} onChange={handleEmailChange} />
+                <input type="email" name="email" value={formState.email} onChange={handleFormChange} />
             </label>
             <label className={styles.password}>
                 Password:
-                <input type="password" value={password} onChange={handlePasswordChange} />
+                <input type="password" name="password" value={formState.password} onChange={handleFormChange} />
             </label>
 
             {method === 'signup' && <SignUp />}

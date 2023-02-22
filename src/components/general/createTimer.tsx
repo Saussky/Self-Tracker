@@ -11,14 +11,29 @@ export default function CreateTimer() {
         setName(event.target.value)
     }
 
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        console.log('token: ', token)
+
+        const response = await fetch('/api/data/timers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, }),
+        });
+    }
+
 
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <h1>Create A Timer</h1>
-            <label htmlFor="name">Name of Timer:
-                <input value={name} onChange={handleNameChange}></input>
-            </label>
-
+            <label htmlFor="name">Name of Timer:</label>
+            <input value={name} onChange={handleNameChange}></input>
+            <br></br>
+            <button type="submit">Create</button>
 
         </form>
     )

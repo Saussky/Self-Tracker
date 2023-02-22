@@ -7,7 +7,9 @@ CREATE TABLE users (
     verified BOOLEAN
 );
 
-INSERT INTO users VALUES ('greg@ory.com', 'abcd1234', 28, 'Australia');
+//password uncoded is abcd1234
+
+INSERT INTO users VALUES ('greg@ory.com', 'e9cee71ab932fde863338d08be4de9dfe39ea049bdafb342ce659ec5450b69ae', 28, 'Australia', 'hi', false);
 
 CREATE TABLE timers (
     id SERIAL PRIMARY KEY,

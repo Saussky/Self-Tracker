@@ -7,6 +7,7 @@ const jwtSecret = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'moon';
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { email, hashedPassword } = req.body;
+    console.log('a', email, hashedPassword)
 
     const result = await users.getUser(email);
 
