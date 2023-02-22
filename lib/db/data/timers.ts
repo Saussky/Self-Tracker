@@ -2,6 +2,11 @@ import Pool from '../pool';
 import config from '../config';
 import { QueryResult } from 'pg';
 
+// There's two tables for timers
+// timer_info holds the core information of the timer to load, such as it's name and it stores the unique ID
+// timer_data stores the individual timer data for each session
+
+
 export class TimerRepo {
   pool: Pool;
 
@@ -11,26 +16,29 @@ export class TimerRepo {
 
   async createTimer(
     name: string,
-    frequency: string,
-    dateOfLastUse: Date,
-    timeElapsedToday: number,
-    timeElapsedAll: number,
-    userEmail: string
-  ): Promise<QueryResult> {
+    userEmail: string,    
+  ): Promise<void> {
     const sql =
-      'INSERT INTO timers (name, frequency, date_of_last_use, time_elapsed_today, time_elapsed_all, user_email) VALUES ($1, $2, $3, $4, $5, $6)';
-    const params = [name, frequency, dateOfLastUse, timeElapsedToday, timeElapsedAll, userEmail];
+      'INSERT INTO timer_info (name, user_email) VALUES ($1, $2)';
+    const params = [name, userEmail];
 
-    return this.pool.query(sql, params);
+    await this.pool.query(sql, params);
   }
 
   async getTimersByUserEmail(userEmail: string): Promise<QueryResult> {
-    const sql = 'SELECT * FROM timers WHERE user_email = $1';
+    const sql = 'SELECT * FROM timer_info WHERE user_email = $1';
     const params = [userEmail];
 
     return this.pool.query(sql, params);
   }
 
+}
+
+const timers = new TimerRepo(new Pool(config.timers));
+
+export default timers;
+
+/*
   async getTimerById(id: string): Promise<QueryResult> {
     const sql = 'SELECT * FROM timers WHERE id = $1';
     const params = [id];
@@ -59,8 +67,4 @@ export class TimerRepo {
 
     return this.pool.query(sql, params);
   }
-}
-
-const timers = new TimerRepo(new Pool(config.timers));
-
-export default timers;
+*/
