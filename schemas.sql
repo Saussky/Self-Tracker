@@ -21,7 +21,8 @@ CREATE TABLE timer_info (
 );
 
 CREATE TABLE timer_data (
-    id uuid PRIMARY KEY REFERENCES timer_info(id),
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    info_id uuid REFERENCES timer_info(id),
     date_created DATE NOT NULL DEFAULT CURRENT_DATE,
     time_elapsed INTERVAL DEFAULT '0 seconds'
 );

@@ -2,20 +2,68 @@ import React, { useEffect, useRef, useState } from 'react'
 import { DateTime } from 'luxon'
 import styles from '../../styles/general/Box.module.css'
 import Expand from './expand'
+import { TimerInfo } from './general'
 
-export default function Timer() {
-    const [start, setStart] = useState(false)
-    const [startTime, setStartTime] = useState(0)
+interface TimerProps {
+    key: string,
+    info: TimerInfo
+}
 
-    const [timeElapsed, setTimeElapsed] = useState(0)
+async function createDBEntry(token: string, id: string) {
+    try {
+        const response = await fetch('/api/general/timers/timer-data/start', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token, id }),
+        })
 
-    const [paused, setPaused] = useState(false)
-    const [pauseTime, setPauseTime] = useState(0)
+        if (response.status === 200) {
+            console.log("IT'S ALIVE")
+            const data = await response.json();
+            return data.UUID
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
 
-    const [bonus, setBonus] = useState(0)
+async function updateDBTime(token: string, uniqueId: string, timeElapsed: number) {
+    try {
+        const response = await fetch('/api/general/timers/timer-data/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token, uniqueId, timeElapsed }),
+        })
 
-    const intervalIdRef = useRef(0);
-    const pauseIntervalIdRef = useRef(0)
+        if (response.status === 200) {
+            console.log("TIME UPDATED!")
+        }
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
+export default function Timer(props: TimerProps) {
+    const { id, user_email, name, date_created, date_of_last_use, frequency } = props.info
+    const [uniqueId, setUniqueId] = useState<string>('')
+
+    const [start, setStart] = useState<boolean>(false)
+    const [startTime, setStartTime] = useState<number>(0)
+
+    const [timeElapsed, setTimeElapsed] = useState<number>(0)
+
+    const [paused, setPaused] = useState<boolean>(false)
+    const [pauseTime, setPauseTime] = useState<number>(0)
+
+    const [bonus, setBonus] = useState<number>(0)
+
+    const intervalIdRef = useRef<number>(0)
+    const pauseIntervalIdRef = useRef<number>(0)
 
     // Takes in seconds as a time and outputs a string with hours and minutes
     const formatTime = (time: number): string => {
@@ -26,11 +74,15 @@ export default function Timer() {
         const minutes: number = Math.floor((timeWithBonus / 60) % 60);
         const seconds: number = Math.floor(timeWithBonus % 60)
 
+        console.log('seconds.. ', seconds)
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        updateDBTime(token, uniqueId, seconds)
+
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
     // Start the timer
-    const startTimer = () => {
+    const startTimer = async() => {
         if (paused) {
             // Stop the paused timer
             setPaused(false);
@@ -41,10 +93,15 @@ export default function Timer() {
         } else {
             // For the first click, set the time to be counted from
             setStartTime(DateTime.local().toSeconds());
+            // And create the timer in the timer_data DB
+            const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            setUniqueId(await createDBEntry(token, id))
         }
 
         setStart(true)
     };
+
+    console.log(uniqueId)
 
     // Have to use useEffect because otherwise startTime doesn't get updated properly on first click
     useEffect(() => {
@@ -58,7 +115,6 @@ export default function Timer() {
         return () => {
             clearInterval(intervalIdRef.current);
         }
-
     }, [start, pauseTime, startTime])
 
     // Pause the timer
@@ -73,7 +129,6 @@ export default function Timer() {
             const newTime = DateTime.local().toSeconds();
             setPauseTime(pauseTime + (newTime - now));
         }, 1000)
-
     };
 
     // Doesn't work if the timer is paused
@@ -94,7 +149,7 @@ export default function Timer() {
 
     return (
         <div className={styles.box}>
-            <h1>Work Timer</h1>
+            <h1>{name}</h1>
             <div>
                 {formatTime(timeElapsed)}
             </div>

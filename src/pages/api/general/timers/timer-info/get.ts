@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
-import timers from '../../../../../lib/db/data/timers';
+import timers from '../../../../../../lib/db/data/timers';
 
 const jwtSecret = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'moon';
 
@@ -15,12 +15,10 @@ export default async function getTimersRequest(req: NextApiRequest, res: NextApi
   }
 
   try {
-
     const decodedToken = jwt.verify(token, jwtSecret) as { email: string };
     const { email } = decodedToken;
     const { rows: userTimers } = await timers.getTimersByEmail(email);
     res.status(200).json({ timers: userTimers });
-
   } catch (error) {
     return res.status(401).json({ message: 'Invalid token' });
   }

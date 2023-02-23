@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import timers from '../../../../../lib/db/data/timers';
+import timers from '../../../../../../lib/db/data/timers';
 import jwt from 'jsonwebtoken'
 
 const jwtSecret = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'moon';

@@ -4,7 +4,7 @@ import Counter from './counter'
 import CreateTimer from './createTimer'
 import Timer from './timer'
 
-interface Timers {
+export interface TimerInfo {
     id: string,
     user_email: string,
     name: string,
@@ -14,13 +14,13 @@ interface Timers {
 }
 
 export default function GeneralContainer() {
-    const [userTimers, setUserTimers] = useState<Timers[]>([])
+    const [userTimers, setUserTimers] = useState<TimerInfo[]>([])
 
     async function fetchTimers() {
         try {
             const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
-            const response = await fetch(`/api/data/timers/get?token=${token}`, {
+            const response = await fetch(`/api/general/timers/timer-info/get?token=${token}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,10 +46,11 @@ export default function GeneralContainer() {
         <div className={styles.container}>
             {
                 userTimers.map(timer => {
-                    return 'hiiii'
+                    return <Timer key={timer.id} info={timer} />
                 })
             }
-            <Timer />
+            {//<Timer />
+            }
             <Counter />
             <CreateTimer />
         </div>
