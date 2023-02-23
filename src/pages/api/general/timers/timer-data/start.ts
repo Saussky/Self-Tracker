@@ -17,7 +17,6 @@ export default async function startTimer(req: NextApiRequest, res: NextApiRespon
   }
 
   try {
-    console.log(id, token)
     // const decodedToken = jwt.verify(token, jwtSecret) as { email: string };
     const UUID = await timers.startTimer(id)
     res.status(200).json({ message: "Timer created", UUID });

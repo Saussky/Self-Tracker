@@ -45,7 +45,24 @@ async function updateDBTime(token: string, uniqueId: string, timeElapsed: number
     } catch (e) {
         console.log(e)
     }
+}
 
+async function checkForExistingTimer(token: string, info_id: string) {
+    try {
+        const response = await fetch(`/api/general/timers/timer-data/check?token=${token}&info_id=${info_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (response.status === 200) {
+            const { id } = await response.json()
+            return id
+        }
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 export default function Timer(props: TimerProps) {
@@ -65,6 +82,21 @@ export default function Timer(props: TimerProps) {
     const intervalIdRef = useRef<number>(0)
     const pauseIntervalIdRef = useRef<number>(0)
 
+    useEffect(() => {
+        const timerDateCheck = async () => {
+            const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            const unique = await checkForExistingTimer(token, id)
+            console.log('uniq', unique)
+
+            if (!unique) {
+                setUniqueId(await createDBEntry(token, id))
+            } else {
+                setUniqueId(unique)
+            }
+        }
+        timerDateCheck()
+    }, [])
+
     // Takes in seconds as a time and outputs a string with hours and minutes
     const formatTime = (time: number): string => {
         // Every skipped 5 or back 5 minutes are calculated here
@@ -82,7 +114,7 @@ export default function Timer(props: TimerProps) {
     }
 
     // Start the timer
-    const startTimer = async() => {
+    const startTimer = async () => {
         if (paused) {
             // Stop the paused timer
             setPaused(false);
@@ -93,9 +125,6 @@ export default function Timer(props: TimerProps) {
         } else {
             // For the first click, set the time to be counted from
             setStartTime(DateTime.local().toSeconds());
-            // And create the timer in the timer_data DB
-            const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-            setUniqueId(await createDBEntry(token, id))
         }
 
         setStart(true)
@@ -109,6 +138,7 @@ export default function Timer(props: TimerProps) {
             intervalIdRef.current = window.setInterval(() => {
                 const newTime = DateTime.local().toSeconds();
                 setTimeElapsed(newTime - startTime - pauseTime);
+                console.log(typeof(timeElapsed))
             }, 1000)
         }
 
@@ -166,7 +196,7 @@ export default function Timer(props: TimerProps) {
                 <Expand />
             </div>
 
-        
+
 
         </div>
     )

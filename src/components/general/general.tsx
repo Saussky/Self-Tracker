@@ -13,34 +13,37 @@ export interface TimerInfo {
     frequency: number
 }
 
+// Need to check if there is already a timer setup for the day
+
+async function fetchTimers(token: string) {
+    try {
+        const response = await fetch(`/api/general/timers/timer-info/get?token=${token}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        const { timers } = await response.json()
+        return timers;
+
+    } catch (e) {
+        console.log('fetch failed')
+        console.log(e)
+    }
+}
+
 export default function GeneralContainer() {
     const [userTimers, setUserTimers] = useState<TimerInfo[]>([])
 
-    async function fetchTimers() {
-        try {
-            const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-
-            const response = await fetch(`/api/general/timers/timer-info/get?token=${token}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-
-            const { timers } = await response.json()
-           
-            return setUserTimers(timers);
-
-        } catch (e) {
-            console.log('fetch failed')
-            console.log(e)
-        }
-    }
-
     useEffect(() => {
-        fetchTimers()
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        async function fetchAndSetTimers() {
+            const fetchedTimers = await fetchTimers(token);
+            setUserTimers(fetchedTimers);
+        }
+        fetchAndSetTimers();
     }, [])
-
 
     return (
         <div className={styles.container}>

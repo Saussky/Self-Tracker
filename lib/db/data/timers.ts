@@ -15,6 +15,7 @@ export class TimerRepo {
     this.pool = pool;
   }
 
+  // Creates a timer for a user
   async createTimer(name: string, userEmail: string): Promise<void> {
     const sql =
       'INSERT INTO timer_info (name, user_email) VALUES ($1, $2)';
@@ -23,6 +24,7 @@ export class TimerRepo {
     await this.pool.query(sql, params);
   }
 
+  // Gets all the timers the user has created
   async getTimersByEmail(userEmail: string): Promise<QueryResult> {
     const sql = 'SELECT * FROM timer_info WHERE user_email = ($1)';
     const params = [userEmail];
@@ -30,9 +32,10 @@ export class TimerRepo {
     return this.pool.query(sql, params);
   }
 
-  async startTimer(id: string): Promise<void> {
+  // Enters in a timer to timer_data which is now ready to count
+  async startTimer(info_id: string): Promise<void> {
     const sql = "INSERT INTO timer_data (info_id) VALUES ($1) RETURNING id";
-    const params = [id];
+    const params = [info_id];
 
     try {
       const { rows } = await this.pool.query(sql, params);
@@ -44,10 +47,20 @@ export class TimerRepo {
     }
   }
 
+  // Gets the timer if one has already been created today
+  async getTimerByDate(info_id: string) {
+    console.log('checking...')
+    const sql = "SELECT id FROM timer_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";
+    const params = [info_id];
+
+    const { rows } = await this.pool.query(sql, params);
+    return rows;
+  }
+
+  // Updates the time_elapsed column for the timer
   async updateTimer(id: string, timeElapsed: number): Promise<void> {
     const duration = Duration.fromObject({ seconds: timeElapsed });
     const isoDuration = duration.toISOTime();
-    console.log(timeElapsed)
 
     const sql = "UPDATE timer_data SET time_elapsed = ($1) WHERE id = ($2)"
     const params = [isoDuration, id]
