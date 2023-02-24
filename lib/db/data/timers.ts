@@ -2,6 +2,7 @@ import Pool from '../pool';
 import config from '../config';
 import { QueryResult } from 'pg';
 import { Duration } from 'luxon';
+import parse from 'postgres-interval'
 
 // There's two tables for timers
 // timer_info holds the core information of the timer to load, such as it's name and it stores the unique ID
@@ -50,7 +51,7 @@ export class TimerRepo {
   // Gets the timer if one has already been created today
   async getTimerByDate(info_id: string) {
     console.log('checking...')
-    const sql = "SELECT id FROM timer_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";
+    const sql = "SELECT * FROM timer_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";
     const params = [info_id];
 
     const { rows } = await this.pool.query(sql, params);
@@ -58,12 +59,11 @@ export class TimerRepo {
   }
 
   // Updates the time_elapsed column for the timer
-  async updateTimer(id: string, timeElapsed: number): Promise<void> {
-    const duration = Duration.fromObject({ seconds: timeElapsed });
-    const isoDuration = duration.toISOTime();
+  async updateTimer(id: string, timeElapsed: string): Promise<void> {
+    const interval = parse(timeElapsed).toPostgres()
 
     const sql = "UPDATE timer_data SET time_elapsed = ($1) WHERE id = ($2)"
-    const params = [isoDuration, id]
+    const params = [interval, id]
 
     await this.pool.query(sql, params)
   }

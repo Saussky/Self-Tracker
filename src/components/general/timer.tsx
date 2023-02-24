@@ -57,11 +57,12 @@ async function checkForExistingTimer(token: string, info_id: string) {
         })
 
         if (response.status === 200) {
-            const { id } = await response.json()
-            return id
+            const { id, time_elapsed } = await response.json()
+            return { id, time_elapsed }
         }
     } catch (e) {
         console.log(e)
+        return {id: false, time_elapsed: 0}
     }
 }
 
@@ -88,10 +89,12 @@ export default function Timer(props: TimerProps) {
             const unique = await checkForExistingTimer(token, id)
             console.log('uniq', unique)
 
-            if (!unique) {
+            if (!unique || !unique.id) {
+                console.log('heyy')
                 setUniqueId(await createDBEntry(token, id))
             } else {
-                setUniqueId(unique)
+                setUniqueId(unique.id)
+                setBonus(bonus + unique.time_elapsed)
             }
         }
         timerDateCheck()
@@ -104,13 +107,13 @@ export default function Timer(props: TimerProps) {
 
         const hours: number = Math.floor(timeWithBonus / 3600);
         const minutes: number = Math.floor((timeWithBonus / 60) % 60);
-        const seconds: number = Math.floor(timeWithBonus % 60)
-
-        console.log('seconds.. ', seconds)
+        const seconds: number = Math.floor(timeWithBonus % 60);       
+        const totalTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+        
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        updateDBTime(token, uniqueId, seconds)
+        updateDBTime(token, uniqueId, totalTime)
 
-        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        return totalTime;
     }
 
     // Start the timer
@@ -138,7 +141,6 @@ export default function Timer(props: TimerProps) {
             intervalIdRef.current = window.setInterval(() => {
                 const newTime = DateTime.local().toSeconds();
                 setTimeElapsed(newTime - startTime - pauseTime);
-                console.log(typeof(timeElapsed))
             }, 1000)
         }
 

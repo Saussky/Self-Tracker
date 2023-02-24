@@ -11,7 +11,7 @@ export default async function startTimer(req: NextApiRequest, res: NextApiRespon
 
   const token = req.body.token as string;
   const id = req.body.uniqueId as string;
-  const timeElapsed = req.body.timeElapsed as number;
+  const timeElapsed = req.body.timeElapsed as string;
 
   if (!token || !id) {
     return res.status(401).json({ message: 'Token or Id not provided' });
