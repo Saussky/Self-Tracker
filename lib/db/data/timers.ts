@@ -51,10 +51,11 @@ export class TimerRepo {
   // Gets the timer if one has already been created today
   async getTimerByDate(info_id: string) {
     console.log('checking...')
-    const sql = "SELECT * FROM timer_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";
+    const sql = "SELECT *, to_char(time_elapsed, 'HH24:MI:SS') AS formatted_time FROM timer_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";
     const params = [info_id];
 
     const { rows } = await this.pool.query(sql, params);
+    console.log('r ', rows)
     return rows;
   }
 
