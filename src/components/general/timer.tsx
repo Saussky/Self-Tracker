@@ -29,7 +29,7 @@ async function createDBEntry(token: string, id: string) {
     }
 }
 
-async function updateDBTime(token: string, uniqueId: string, timeElapsed: number) {
+async function updateDBTime(token: string, uniqueId: string, timeElapsed: string) {
     try {
         const response = await fetch('/api/general/timers/timer-data/update', {
             method: 'POST',
@@ -94,11 +94,11 @@ export default function Timer(props: TimerProps) {
                 setUniqueId(await createDBEntry(token, id))
             } else {
                 setUniqueId(unique.id)
-                setBonus(bonus + unique.time_elapsed)
+                setBonus(bonus => bonus + unique.time_elapsed)
             }
         }
         timerDateCheck()
-    }, [])
+    }, [id])
 
     // Takes in seconds as a time and outputs a string with hours and minutes
     const formatTime = (time: number): string => {
@@ -109,7 +109,7 @@ export default function Timer(props: TimerProps) {
         const minutes: number = Math.floor((timeWithBonus / 60) % 60);
         const seconds: number = Math.floor(timeWithBonus % 60);       
         const totalTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-        
+
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         updateDBTime(token, uniqueId, totalTime)
 
