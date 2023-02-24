@@ -9,6 +9,9 @@ interface TimerProps {
     info: TimerInfo
 }
 
+// TODO: Add toaster error messages, seperate fetch functions into server side props (use context as input for token)
+// fix reset button, change it so it only updates to the db every x seconds (15?). 
+
 async function createDBEntry(token: string, id: string) {
     try {
         const response = await fetch('/api/general/timers/timer-data/start', {
@@ -20,7 +23,6 @@ async function createDBEntry(token: string, id: string) {
         })
 
         if (response.status === 200) {
-            console.log("IT'S ALIVE")
             const data = await response.json();
             return data.UUID
         }
@@ -79,6 +81,7 @@ export default function Timer(props: TimerProps) {
     const [pauseTime, setPauseTime] = useState<number>(0)
 
     const [bonus, setBonus] = useState<number>(0)
+    const [previousSeconds, setPreviousSeconds] = useState<number>(0)
 
     const intervalIdRef = useRef<number>(0)
     const pauseIntervalIdRef = useRef<number>(0)
@@ -87,14 +90,12 @@ export default function Timer(props: TimerProps) {
         const timerDateCheck = async () => {
             const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
             const unique = await checkForExistingTimer(token, id)
-            console.log('uniq', unique)
 
             if (!unique || !unique.id) {
-                console.log('heyy')
                 setUniqueId(await createDBEntry(token, id))
             } else {
                 setUniqueId(unique.id)
-                setBonus(bonus => bonus + unique.time_elapsed)
+                setPreviousSeconds(seconds => seconds + unique.time_elapsed)
             }
         }
         timerDateCheck()
@@ -103,7 +104,7 @@ export default function Timer(props: TimerProps) {
     // Takes in seconds as a time and outputs a string with hours and minutes
     const formatTime = (time: number): string => {
         // Every skipped 5 or back 5 minutes are calculated here
-        const timeWithBonus = time + bonus
+        const timeWithBonus = time + bonus + previousSeconds
 
         const hours: number = Math.floor(timeWithBonus / 3600);
         const minutes: number = Math.floor((timeWithBonus / 60) % 60);
@@ -132,8 +133,6 @@ export default function Timer(props: TimerProps) {
 
         setStart(true)
     };
-
-    console.log(uniqueId)
 
     // Have to use useEffect because otherwise startTime doesn't get updated properly on first click
     useEffect(() => {
@@ -165,6 +164,8 @@ export default function Timer(props: TimerProps) {
 
     // Doesn't work if the timer is paused
     const reset = () => {
+        setPreviousSeconds(0)
+        setBonus(0)
         setStartTime(DateTime.local().toSeconds())
     }
 
@@ -203,8 +204,3 @@ export default function Timer(props: TimerProps) {
         </div>
     )
 }
-
-/*
-            <button onClick={forwardFive}>Skip 5</button>
-            <button onClick={backFive}>Back 5</button>
-            */
