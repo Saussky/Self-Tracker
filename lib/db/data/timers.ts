@@ -55,8 +55,20 @@ export class TimerRepo {
     const params = [info_id];
 
     const { rows } = await this.pool.query(sql, params);
-    console.log('r ', rows)
-    return rows;
+
+    const rowsWithElapsedSeconds = rows.map(row => {
+      const [hoursStr, minutesStr, secondsStr] = row.formatted_time.split(':');
+      const hours = parseInt(hoursStr, 10);
+      const minutes = parseInt(minutesStr, 10);
+      const seconds = parseInt(secondsStr, 10);
+      const elapsedSeconds = hours * 3600 + minutes * 60 + seconds;
+      return {
+        ...row,
+        elapsedSeconds,
+      };
+    });
+  
+    return rowsWithElapsedSeconds;
   }
 
   // Updates the time_elapsed column for the timer

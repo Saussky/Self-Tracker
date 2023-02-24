@@ -24,13 +24,7 @@ export default async function getTimersRequest(req: NextApiRequest, res: NextApi
         // IF REACT STRICT MODE IS ON THERE WILL BE TWO TIMERS CREATED >:o
 
         if (todaysTimer.length > 0) {
-            console.log('tt ,', todaysTimer)
-            const time = (todaysTimer[0].time_elapsed.toPostgres())
-            console.log('tt ', time)
-            const postgresTime = parse(time)
-            console.log("🚀 ~ file: check.ts:30 ~ getTimersRequest ~ postgresTime:", postgresTime)
-
-            res.status(200).json({ id: todaysTimer[0].id, time_elapsed: time });
+            res.status(200).json({ id: todaysTimer[0].id, time_elapsed: todaysTimer[0].elapsedSeconds });
         } else {
             console.log('... no timers found')
             res.status(200).json({ id: false, time_elapsed: 0 })
