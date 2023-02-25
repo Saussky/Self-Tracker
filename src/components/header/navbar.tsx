@@ -16,13 +16,18 @@ export default function Navbar() {
          <div className={styles.navOptions}>
             <Link href="/workout">Workout</Link>
          </div>
+
          <div className={styles.navOptions}>
             <Link href="/gym">Spending</Link>
          </div>
 
          <div className={styles.navOptions}>
-            <Login />
+            <Link href="/login">Login</Link>
          </div>
+
+         {/* <div className={styles.navOptions}>
+            <Login />
+         </div> */}
       </div>
    )
 }
