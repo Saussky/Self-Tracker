@@ -104,15 +104,17 @@ export default function Timer(props: TimerProps) {
     // Takes in seconds as a time and outputs a string with hours and minutes
     const formatTime = (time: number): string => {
         // Every skipped 5 or back 5 minutes are calculated here
-        const timeWithBonus = time + bonus + previousSeconds
+        const timeWithBonus: number = time + bonus + previousSeconds
 
         const hours: number = Math.floor(timeWithBonus / 3600);
         const minutes: number = Math.floor((timeWithBonus / 60) % 60);
         const seconds: number = Math.floor(timeWithBonus % 60);       
-        const totalTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+        const totalTime: string = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 
-        const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        updateDBTime(token, uniqueId, totalTime)
+        const token: string = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+        // Update the DB only if seconds is at 15, 30, 45 or 60
+        seconds % 15 === 0 && updateDBTime(token, uniqueId, totalTime)
 
         return totalTime;
     }
@@ -166,7 +168,11 @@ export default function Timer(props: TimerProps) {
     const reset = () => {
         setPreviousSeconds(0)
         setBonus(0)
+        setPauseTime(0)
+        setTimeElapsed(0)
+
         setStartTime(DateTime.local().toSeconds())
+        setStart(true)
     }
 
     // Skips the timer forward five minutes (through formatTime() function)
