@@ -15,7 +15,7 @@ export default function CreateTimer() {
         event.preventDefault()
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
-        const response = await fetch('/api/general/timers/timer-info/post', {
+        const response = await fetch('/api/general/timers/timer-info/timer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

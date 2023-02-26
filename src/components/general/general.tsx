@@ -17,7 +17,7 @@ export interface TimerInfo {
 
 async function fetchTimers(token: string) {
     try {
-        const response = await fetch(`/api/general/timers/timer-info/get`, {
+        const response = await fetch(`/api/general/timers/timer-info/timer`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,8 +53,7 @@ export default function GeneralContainer() {
                     return <Timer key={timer.id} info={timer} />
                 })
             }
-            {//<Timer />
-            }
+
             <Counter />
             <CreateTimer />
         </div>
