@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import timers from '../../../../../../lib/db/data/timers';
 import { jwtMiddleware } from '../../../middleware/jwt';
 
-const jwtSecret = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'moon';
 
 async function getTimersRequest(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {

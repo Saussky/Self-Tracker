@@ -1,8 +1,6 @@
 import Link from "next/link"
 import { useEffect, useState } from "react";
 import styles from "../../styles/Header.module.css"
-import Login from "./login";
-
 
 
 export default function Navbar() {
