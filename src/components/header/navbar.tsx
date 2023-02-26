@@ -10,7 +10,7 @@ export default function Navbar() {
 
    // If the JWT in the cookies is valid, set the loggedIn state to true
    useEffect(() => {
-      const token: string = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+      const token: string = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1")
       async function checkUserLoggedIn() {
          try {
             const response = await fetch('/api/auth/check', {
@@ -23,20 +23,21 @@ export default function Navbar() {
 
             if (response.status === 200) {
                setLoggedIn(true)
-            } return false
+            } else {
+               setLoggedIn(false)
+            }
          } catch (e) {
             console.log(e)
-            return false
+            setLoggedIn(false)
          }
       }
       checkUserLoggedIn()
-
    }, [])
 
    const logout = () => {
-      document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      location.reload()
-   };
+      document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+      window.location.href = '/'
+   }
 
 
    return (
@@ -44,29 +45,38 @@ export default function Navbar() {
          <div className={styles.navOptions}>
             <Link href="/">Home</Link>
          </div>
+
          <div className={styles.navOptions}>
-            <Link href="/general">General</Link>
-         </div>
-         <div className={styles.navOptions}>
-            <Link href="/workout">Workout</Link>
+            {!loggedIn ? (
+               <Link href="/login">General</Link>
+            ) : (
+               <Link href="/general">General</Link>
+            )}
          </div>
 
          <div className={styles.navOptions}>
-            <Link href="/gym">Spending</Link>
+            {!loggedIn ? (
+               <Link href="/login">Workout</Link>
+            ) : (
+               <Link href="/workout">Workout</Link>
+            )}
+         </div>
+
+         <div className={styles.navOptions}>
+            {!loggedIn ? (
+               <Link href="/login">Spending</Link>
+            ) : (
+               <Link href="/spending">Spending</Link>
+            )}
          </div>
 
          <div className={styles.navOptions}>
             {!loggedIn ? (
                <Link href="/login">Login</Link>
             ) : (
-               <div onClick={logout}style={{ cursor: 'pointer' }}>Logout</div>
+               <div onClick={logout} style={{ cursor: 'pointer' }}>Logout</div>
             )}
          </div>
-
-
-         {/* <div className={styles.navOptions}>
-            <Login />
-         </div> */}
       </div>
    )
 }
