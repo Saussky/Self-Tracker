@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { jwtMiddleware } from '../../../middleware/jwt';
 import timers from '../../../../../../lib/db/data/timers';
 
-const jwtSecret = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'moon';
 
 async function startTimer(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {

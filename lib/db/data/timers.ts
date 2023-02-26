@@ -8,6 +8,7 @@ import parse from 'postgres-interval'
 // timer_info holds the core information of the timer to load, such as it's name and it stores the unique ID
 // timer_data stores the individual timer data for each session
 
+// TODO: date_of_last_use and frequency need to be updated in the timer_info when updating timer_data stuff
 
 export class TimerRepo {
   pool: Pool;
