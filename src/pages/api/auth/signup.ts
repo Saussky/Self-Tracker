@@ -7,14 +7,14 @@ export default async function signup(req: NextApiRequest, res: NextApiResponse) 
 
     try {
       const result = await users.createUser(email, hashedPassword, age, country);
-      res.status(200).json({ message: 'Account creation successful' });
+      return res.status(200).json({ message: 'Account creation successful' });
     }
     catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ message: 'Internal server error' });
     }
     
   } else {
-    res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 }

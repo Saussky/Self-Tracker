@@ -26,7 +26,7 @@ export const jwtMiddleware = (handler: NextApiHandler) => async (req: NextApiReq
         await handler(req, res);
     } catch (e) {
         console.log(e)
-        console.log("mMiddleware failed")
+        console.log("Middleware failed")
         res.status(401).json({ message: "Unauthorized" });
     }
 };

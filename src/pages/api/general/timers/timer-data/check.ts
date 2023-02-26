@@ -21,9 +21,9 @@ async function getTimersRequest(req: NextApiRequest, res: NextApiResponse) {
         // IF REACT STRICT MODE IS ON THERE WILL BE TWO TIMERS CREATED >:o
 
         if (todaysTimer.length > 0) {
-            res.status(200).json({ id: todaysTimer[0].id, time_elapsed: todaysTimer[0].elapsedSeconds });
+            return res.status(200).json({ id: todaysTimer[0].id, time_elapsed: todaysTimer[0].elapsedSeconds });
         } else {
-            res.status(200).json({ id: false, time_elapsed: 0 })
+            return res.status(200).json({ id: false, time_elapsed: 0 })
         }
 
     } catch (error) {

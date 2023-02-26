@@ -18,10 +18,10 @@ async function createTimer(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { email } = req.user 
         await timers.createTimer(name, email)
-        res.status(200).json({ message: 'Timer creation successful' });
+        return res.status(200).json({ message: 'Timer creation successful' });
     } catch (e) {
         console.log(e)
-        res.status(500).json({ message: 'Something went wrong' })
+        return res.status(500).json({ message: 'Something went wrong' })
     }
 }
 

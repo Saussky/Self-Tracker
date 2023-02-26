@@ -11,9 +11,9 @@ async function getTimersRequest(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const { email } = req.user
+    const { email } = req.user 
     const { rows: userTimers } = await timers.getTimersByEmail(email);
-    res.status(200).json({ timers: userTimers });
+    return res.status(200).json({ timers: userTimers });
   } catch (error) {
     return res.status(401).json({ message: "Couldn't get timers"});
   }
