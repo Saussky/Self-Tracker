@@ -19,8 +19,9 @@ export default function CreateTimer() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ name, token}),
+            body: JSON.stringify({ name }),
         });
 
         if (response.status === 200) {

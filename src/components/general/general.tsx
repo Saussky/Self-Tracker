@@ -17,10 +17,11 @@ export interface TimerInfo {
 
 async function fetchTimers(token: string) {
     try {
-        const response = await fetch(`/api/general/timers/timer-info/get?token=${token}`, {
+        const response = await fetch(`/api/general/timers/timer-info/get`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
         })
 

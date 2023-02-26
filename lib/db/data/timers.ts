@@ -34,9 +34,9 @@ export class TimerRepo {
   }
 
   // Enters in a timer to timer_data which is now ready to count
-  async startTimer(info_id: string): Promise<void> {
+  async startTimer(infoId: string): Promise<void> {
     const sql = "INSERT INTO timer_data (info_id) VALUES ($1) RETURNING id";
-    const params = [info_id];
+    const params = [infoId];
 
     try {
       const { rows } = await this.pool.query(sql, params);
@@ -49,10 +49,10 @@ export class TimerRepo {
   }
 
   // Gets the timer if one has already been created today, adds the time it has already tracked
-  async getTimerByDate(info_id: string) {
+  async getTimerByDate(infoId: string) {
     console.log('checking...')
     const sql = "SELECT *, to_char(time_elapsed, 'HH24:MI:SS') AS formatted_time FROM timer_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";
-    const params = [info_id];
+    const params = [infoId];
 
     const { rows } = await this.pool.query(sql, params);
 

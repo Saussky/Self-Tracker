@@ -1,25 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import timers from '../../../../../../lib/db/data/timers';
-import parse from 'postgres-interval'
+import { jwtMiddleware } from '../../../middleware/jwt';
 
 const jwtSecret = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'moon';
 
-export default async function getTimersRequest(req: NextApiRequest, res: NextApiResponse) {
+async function getTimersRequest(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const token = req.query.token as string;
-    const info_id = req.query.info_id as string;
-
-    if (!token) {
-        return res.status(401).json({ message: 'Token not provided' });
+    const infoId = req.query.info_id as string;
+    if (!infoId) {
+        throw new Error("ID not sent through")
     }
 
     try {
-        const decodedToken = jwt.verify(token, jwtSecret) as { email: string };
-        const todaysTimer = await timers.getTimerByDate(info_id);
+        const todaysTimer = await timers.getTimerByDate(infoId);
 
         // IF REACT STRICT MODE IS ON THERE WILL BE TWO TIMERS CREATED >:o
 
@@ -34,4 +31,6 @@ export default async function getTimersRequest(req: NextApiRequest, res: NextApi
         return res.status(401).json({ message: 'Something went wrong' });
     }
 }
+
+export default jwtMiddleware(getTimersRequest)
 

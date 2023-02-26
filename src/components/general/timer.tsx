@@ -10,7 +10,6 @@ interface TimerProps {
 }
 
 // TODO: Add toaster error messages, seperate fetch functions into server side props (use context as input for token)
-// fix reset button, change it so it only updates to the db every x seconds (15?). 
 
 async function createDBEntry(token: string, id: string) {
     try {
@@ -18,8 +17,9 @@ async function createDBEntry(token: string, id: string) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ token, id }),
+            body: JSON.stringify({ id }),
         })
 
         if (response.status === 200) {
@@ -37,8 +37,9 @@ async function updateDBTime(token: string, uniqueId: string, timeElapsed: string
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ token, uniqueId, timeElapsed }),
+            body: JSON.stringify({ uniqueId, timeElapsed }),
         })
 
         if (response.status === 200) {
@@ -51,10 +52,11 @@ async function updateDBTime(token: string, uniqueId: string, timeElapsed: string
 
 async function checkForExistingTimer(token: string, info_id: string) {
     try {
-        const response = await fetch(`/api/general/timers/timer-data/check?token=${token}&info_id=${info_id}`, {
+        const response = await fetch(`/api/general/timers/timer-data/check?info_id=${info_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
         })
 
