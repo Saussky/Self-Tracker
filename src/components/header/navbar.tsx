@@ -39,6 +39,10 @@ export default function Navbar() {
       window.location.href = '/'
    }
 
+   // If the user is not logged in, it will take them to the login page, otherwise it will load the path given in the argument
+   const path = (name: string) => {
+      return loggedIn ? `/${name.toLowerCase()}` : "/login"
+   }
 
    return (
       <div className={styles.navbar}>
@@ -47,27 +51,15 @@ export default function Navbar() {
          </div>
 
          <div className={styles.navOptions}>
-            {!loggedIn ? (
-               <Link href="/login">General</Link>
-            ) : (
-               <Link href="/general">General</Link>
-            )}
+            <Link href={path("general")}>General</Link>
          </div>
 
          <div className={styles.navOptions}>
-            {!loggedIn ? (
-               <Link href="/login">Workout</Link>
-            ) : (
-               <Link href="/workout">Workout</Link>
-            )}
+            <Link href={path("workout")}>Workout</Link>
          </div>
 
          <div className={styles.navOptions}>
-            {!loggedIn ? (
-               <Link href="/login">Spending</Link>
-            ) : (
-               <Link href="/spending">Spending</Link>
-            )}
+            <Link href={path("spending")}>Spending</Link>
          </div>
 
          <div className={styles.navOptions}>
