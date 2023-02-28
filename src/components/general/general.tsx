@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../../styles/general/General.module.css'
-import Counter from './counter'
-import CreateTimer from './createTimer'
-import Timer from './timer'
+import Counter from './counter/counter'
+import CreateCounter from './counter/createCounter'
+import CreateTimer from './timer/createTimer'
+import Timer from './timer/timer'
 
-export interface TimerInfo {
+export interface GeneralInfo {
     id: string,
     user_email: string,
     name: string,
@@ -34,16 +35,40 @@ async function fetchTimers(token: string) {
     }
 }
 
+async function fetchCounters(token: string) {
+    try {
+        const response = await fetch(`/api/general/counters/counter-info/counter`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+
+        const { counters } = await response.json()
+        console.log(counters)
+        return counters;
+
+    } catch (e) {
+        console.log('fetch failed')
+        console.log(e)
+    }
+}
+
 export default function GeneralContainer() {
-    const [userTimers, setUserTimers] = useState<TimerInfo[]>([])
+    const [userTimers, setUserTimers] = useState<GeneralInfo[]>([])
+    const [userCounters, setUserCounters] = useState<GeneralInfo[]>([])
 
     useEffect(() => {
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        async function fetchAndSetTimers() {
-            const fetchedTimers = await fetchTimers(token);
-            setUserTimers(fetchedTimers);
+        async function fetchAndSetData() {
+            const fetchedTimers = await fetchTimers(token)
+            const fetchedCounters = await fetchCounters(token)
+            setUserTimers(fetchedTimers)
+            setUserCounters(fetchedCounters)
+            
         }
-        fetchAndSetTimers();
+        fetchAndSetData()
     }, [])
 
     return (
@@ -54,8 +79,14 @@ export default function GeneralContainer() {
                 })
             }
 
-            <Counter />
+            {
+                userCounters.map(counter => {
+                    return <Counter key={counter.id} info={counter} />
+                })
+            }
+
             <CreateTimer />
+            <CreateCounter />
         </div>
     )
 }

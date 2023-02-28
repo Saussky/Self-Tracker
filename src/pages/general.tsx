@@ -1,5 +1,5 @@
 import Head from "next/head"
-import Timer from "../components/general/timer"
+import Timer from "../components/general/timer/timer"
 import GeneralContainer from "../components/general/general"
 import Header from "../components/header/header"
 import { useUser } from '@auth0/nextjs-auth0/client';

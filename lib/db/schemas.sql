@@ -42,7 +42,7 @@ CREATE TABLE counter_info (
 
 CREATE TABLE counter_data (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    counter_id uuid REFERENCES counter_info(id),
+    info_id uuid REFERENCES counter_info(id),
     date_created DATE NOT NULL DEFAULT CURRENT_DATE,
     amount INTEGER DEFAULT 0
 );

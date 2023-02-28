@@ -4,11 +4,12 @@ import counters from '../../../../../../lib/db/data/counters';
 
 
 async function Counter(req: NextApiRequest, res: NextApiResponse) {
+  console.log('hi')
   if (req.method === 'GET') {
     try {
       const { email } = req.user
       const { rows: userCounters } = await counters.getCountersByEmail(email)
-      return res.status(200).json({ timers: userCounters })
+      return res.status(200).json({ counters: userCounters })
     } catch (error) {
       return res.status(401).json({ message: "Couldn't get counters"})
     }

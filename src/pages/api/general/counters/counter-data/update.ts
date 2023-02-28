@@ -19,6 +19,7 @@ async function startCounter(req: NextApiRequest, res: NextApiResponse) {
     await counters.updateCounter(id, amount)
     res.status(200).json({ message: "counter started" });
   } catch (error) {
+    console.log('ee', error)
     return res.status(401).json({ message: "Couldn't start counter" });
   }
 }

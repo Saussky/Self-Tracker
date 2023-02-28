@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { DateTime } from 'luxon'
-import styles from '../../styles/general/Box.module.css'
-import Expand from './expand'
-import { TimerInfo } from './general'
+import styles from '../../../styles/general/Box.module.css'
+import Expand from '../expand'
+import { GeneralInfo } from '../general'
 
 interface TimerProps {
     key: string,
-    info: TimerInfo
+    info: GeneralInfo
 }
 
 // TODO: Add toaster error messages, seperate fetch functions into server side props (use context as input for token)
