@@ -1,11 +1,10 @@
 import Pool from '../pool';
 import config from '../config';
 import { QueryResult } from 'pg';
-import parse from 'postgres-interval'
 
-// There's two tables for timers
-// timer_info holds the core information of the timer to load, such as it's name and it stores the unique ID
-// timer_data stores the individual timer data for each session
+// There's two tables for counters
+// counter_info holds the core information of the counter to load, such as it's name and it stores the unique ID
+// counter_data stores the individual counter data for each session/day
 
 export class CounterRepo {
   pool: Pool;
@@ -16,8 +15,7 @@ export class CounterRepo {
 
   // Creates a counter for a user
   async createCounter(name: string, userEmail: string): Promise<void> {
-    const sql =
-      'INSERT INTO counter_info (name, user_email) VALUES ($1, $2)';
+    const sql = 'INSERT INTO counter_info (name, user_email) VALUES ($1, $2)';
     const params = [name, userEmail];
 
     await this.pool.query(sql, params);
@@ -47,11 +45,11 @@ export class CounterRepo {
 
   // Gets the counter if one has already been created today
   async getCounterByDate(infoId: string) {
-    console.log('checking...')
     const sql = "SELECT * FROM counter_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";
     const params = [infoId];
+    const { rows } = await this.pool.query(sql, params)
 
-    return await this.pool.query(sql, params)
+    return rows
   }
 
   // Updates the count column for the counter

@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { jwtMiddleware } from '../../../middleware/jwt';
-import timers from '../../../../../../lib/db/data/timers';
+import counters from '../../../../../../lib/db/data/counters';
 
 
-async function startTimer(req: NextApiRequest, res: NextApiResponse) {
+async function startCounter(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -14,11 +14,11 @@ async function startTimer(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const UUID = await timers.startTimer(id)
-    res.status(200).json({ message: "Timer created", UUID });
+    const UUID = await counters.startCounter(id)
+    res.status(200).json({ message: "Counter created", UUID });
   } catch (error) {
-    return res.status(401).json({ message: `Couldn't create timer` });
+    return res.status(401).json({ message: `Couldn't create counter` });
   }
 }
 
-export default jwtMiddleware(startTimer)
+export default jwtMiddleware(startCounter)

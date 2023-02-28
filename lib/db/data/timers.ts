@@ -1,14 +1,14 @@
 import Pool from '../pool';
 import config from '../config';
 import { QueryResult } from 'pg';
-import { Duration } from 'luxon';
 import parse from 'postgres-interval'
 
 // There's two tables for timers
 // timer_info holds the core information of the timer to load, such as it's name and it stores the unique ID
 // timer_data stores the individual timer data for each session
 
-// TODO: date_of_last_use and frequency need to be updated in the timer_info when updating timer_data stuff
+// TODO: date_of_last_use and frequency need to be updated in the timer_info when updating timer_data stuff, add a delete timer function
+// TODO: get all timers from timer_data when passing in an ID 
 
 export class TimerRepo {
   pool: Pool;
@@ -26,7 +26,7 @@ export class TimerRepo {
     await this.pool.query(sql, params);
   }
 
-  // Gets all the timers the user has created
+  // Gets all the timers from timer_info the user has created
   async getTimersByEmail(userEmail: string): Promise<QueryResult> {
     const sql = 'SELECT * FROM timer_info WHERE user_email = ($1)';
     const params = [userEmail];
@@ -44,14 +44,12 @@ export class TimerRepo {
       const generatedUUID = rows[0].id;
       return generatedUUID;
     } catch (e) {
-      console.log('HERE')
       console.log(e)
     }
   }
 
   // Gets the timer if one has already been created today, adds the time it has already tracked
   async getTimerByDate(infoId: string) {
-    console.log('checking...')
     const sql = "SELECT *, to_char(time_elapsed, 'HH24:MI:SS') AS formatted_time FROM timer_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";
     const params = [infoId];
 
@@ -68,8 +66,14 @@ export class TimerRepo {
         elapsedSeconds,
       };
     });
-  
+
     return rowsWithElapsedSeconds;
+  }
+
+  async getTimerById(infoId: string): Promise<QueryResult> {
+    const sql = "SELECT * FROM timer_data WHERE info_id = ($1)"
+    const params = [infoId]
+    return await this.pool.query(sql, params)
   }
 
   // Updates the time_elapsed column for the timer
@@ -85,8 +89,6 @@ export class TimerRepo {
 }
 
 const timers = new TimerRepo(new Pool(config.db));
-
-
 export default timers;
 
 /*

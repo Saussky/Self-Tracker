@@ -4,7 +4,7 @@ import { jwtMiddleware } from '../../../middleware/jwt';
 import timers from '../../../../../../lib/db/data/timers';
 
 
-async function getTimersRequest(req: NextApiRequest, res: NextApiResponse) {
+async function Timer(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     try {
       const { email } = req.user
@@ -36,4 +36,4 @@ async function getTimersRequest(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default jwtMiddleware(getTimersRequest)
+export default jwtMiddleware(Timer)
