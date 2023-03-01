@@ -54,7 +54,7 @@ export class CounterRepo {
 
   // Updates the count column for the counter
   async updateCounter(id: string, amount: number): Promise<void> {
-    const sql = "UPDATE counter_data SET amount = amount + ($1) WHERE id = ($2)";
+    const sql = "UPDATE counter_data SET amount = ($1) WHERE id = ($2)";
     const params = [amount, id]; 
 
     await this.pool.query(sql, params)

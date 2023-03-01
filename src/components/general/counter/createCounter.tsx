@@ -1,6 +1,8 @@
+import router from 'next/router';
 import React, { useState } from 'react'
 
 // Need to do one for going up and one for down, will need to use seperate SQL tables?
+// TODO: Test reload page after creation
 export default function CreateCounter() {
     const [name, setName] = useState<string>()
 
@@ -23,6 +25,7 @@ export default function CreateCounter() {
 
         if (response.status === 200) {
             console.log('YES!')
+            router.push('/general')
         } else {
             console.log('fail')
         }
