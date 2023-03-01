@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 // TODO: Test reload page after creation
 export default function CreateCounter() {
     const [name, setName] = useState<string>()
+    const [error, setError] = useState<string>('')
 
     function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
         setName(event.target.value)
@@ -24,10 +25,9 @@ export default function CreateCounter() {
         });
 
         if (response.status === 200) {
-            console.log('YES!')
-            router.push('/general')
+            window.location.reload();
         } else {
-            console.log('fail')
+            console.log('Failed to create timer')
         }
     }
 

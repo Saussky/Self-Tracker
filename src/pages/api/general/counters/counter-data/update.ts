@@ -10,7 +10,6 @@ async function startCounter(req: NextApiRequest, res: NextApiResponse) {
 
   const id = req.body.uniqueId as string;
   const amount = req.body.amount as number;
-  console.log(req.body)
 
   if (!id) {
     return res.status(401).json({ message: 'Amount or Id not provided' });
