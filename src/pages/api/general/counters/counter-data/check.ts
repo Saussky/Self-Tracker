@@ -17,6 +17,7 @@ async function CheckForCounters(req: NextApiRequest, res: NextApiResponse) {
         const todaysCounter = await counters.getCounterByDate(infoId);
 
         if (todaysCounter.length > 0) {
+            console.log(todaysCounter)
             return res.status(200).json({ id: todaysCounter[0].id, amount: todaysCounter[0].amount });
         } else {
             return res.status(200).json({ id: false, amount: 0 })

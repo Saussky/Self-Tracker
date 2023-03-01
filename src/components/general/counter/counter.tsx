@@ -71,7 +71,7 @@ async function checkForExistingCounter(token: string, info_id: string) {
 export default function Counter(props: CounterProps) {
     const { id, user_email, name, date_created, date_of_last_use, frequency } = props.info
     const [uniqueId, setUniqueId] = useState<string>('')
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState<number>(0)
 
     useEffect(() => {
         const counterDateCheck = async () => {
@@ -82,7 +82,7 @@ export default function Counter(props: CounterProps) {
                 setUniqueId(await createDBEntry(token, id))
             } else {
                 setUniqueId(existing.id)
-                setCount(amount => amount + existing.amount)
+                setCount(existing.amount)
             }
         }
         counterDateCheck()
