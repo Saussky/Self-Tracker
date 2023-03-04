@@ -44,11 +44,15 @@ async function deleteTimer(req: NextApiRequest, res: NextApiResponse) {
 async function Timer(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     return await getTimers(req, res);
-  } else if (req.method === 'POST') {
+  }
+  else if (req.method === 'POST') {
     return await createTimer(req, res);
-  } else if (req.method === 'PATCH') {
+  }
+  else if (req.method === 'PATCH') {
+    console.log('hhhhhhhh')
     return await deleteTimer(req, res);
-  } else {
+  }
+  else {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 }

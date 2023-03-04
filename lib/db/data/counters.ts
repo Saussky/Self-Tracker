@@ -52,6 +52,21 @@ export class CounterRepo {
     return rows
   }
 
+  async deleteCounterData(infoId: string): Promise<void> {
+    const sql = "DELETE FROM counter_data WHERE info_id = ($1)"
+    const params = [infoId]
+    await this.pool.query(sql, params)
+  }
+
+  async deleteCounterInfo(infoId: string): Promise<void> {
+    // Have to clear out all the data that depends on the counter_info first
+    await this.deleteCounterData(infoId)
+
+    const sql = " DELETE FROM counter_info WHERE id = ($1)"
+    const params = [infoId]
+    await this.pool.query(sql, params)
+  }
+
   // Updates the count column for the counter
   async updateCounter(id: string, amount: number): Promise<void> {
     const sql = "UPDATE counter_data SET amount = ($1) WHERE id = ($2)";

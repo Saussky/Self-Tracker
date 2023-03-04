@@ -68,6 +68,26 @@ async function checkForExistingCounter(token: string, info_id: string) {
     }
 }
 
+async function deleteCounter(token: string, infoId: string) {
+    try {
+        const response = await fetch('/api/general/counters/counter-info/counter', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ infoId }),
+        })
+
+        if (response.status === 200) {
+            console.log("COUNTER DELETED!")
+        }
+    } catch (e) {
+        console.log('umm')
+        console.log(e)
+    }
+}
+
 export default function Counter(props: CounterProps) {
     const { id, user_email, name, date_created, date_of_last_use, frequency } = props.info
     const [uniqueId, setUniqueId] = useState<string>('')
@@ -98,6 +118,12 @@ export default function Counter(props: CounterProps) {
     const subtractOne = () => setCount(count - 1)
     const reset = () => setCount(0)
 
+    const deleteThisCounter = async() => {
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+        await deleteCounter(token, id)
+        location.reload()
+    }
+
     return (
         <div className={styles.box}>
             <h1>{name}</h1>
@@ -110,6 +136,7 @@ export default function Counter(props: CounterProps) {
                 <div>
                     <button onClick={reset}>Reset</button>
                     <Expand />
+                    <button onClick={deleteThisCounter}>Delete</button>
                 </div>
             </div>
         </div>
