@@ -48,6 +48,22 @@ export class TimerRepo {
     }
   }
 
+
+  async deleteTimerData(infoId: string): Promise<void> {
+    const sql = "DELETE FROM timer_data WHERE info_id = ($1)"
+    const params = [infoId]
+    await this.pool.query(sql, params)
+  }
+
+  async deleteTimerInfo(infoId: string): Promise<void> {
+    // Have to clear out all the data that depends on the timer_info first
+    await this.deleteTimerData(infoId)
+
+    const sql = " DELETE FROM timer_info WHERE id = ($1)"
+    const params = [infoId]
+    await this.pool.query(sql, params)
+  }
+
   // Gets the timer if one has already been created today, adds the time it has already tracked
   async getTimerByDate(infoId: string) {
     const sql = "SELECT *, to_char(time_elapsed, 'HH24:MI:SS') AS formatted_time FROM timer_data WHERE info_id = ($1) AND date_created = CURRENT_DATE";

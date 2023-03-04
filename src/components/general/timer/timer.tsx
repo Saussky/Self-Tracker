@@ -10,6 +10,7 @@ interface TimerProps {
 }
 
 // TODO: Add toaster error messages, seperate fetch functions into server side props (use context as input for token)
+// TODO: Add a hide button to this and counter box
 
 async function createDBEntry(token: string, id: string) {
     try {
@@ -69,6 +70,27 @@ async function checkForExistingTimer(token: string, info_id: string) {
         return {id: false, time_elapsed: 0}
     }
 }
+
+async function deleteTimer(token: string, infoId: string) {
+    try {
+        const response = await fetch('/api/general/timers/timer-info/timer', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ infoId }),
+        })
+
+        if (response.status === 200) {
+            console.log("TIME DELETED!")
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
 
 export default function Timer(props: TimerProps) {
     const { id, user_email, name, date_created, date_of_last_use, frequency } = props.info
@@ -187,6 +209,11 @@ export default function Timer(props: TimerProps) {
         setBonus(bonus - 300)
     }
 
+    const deleteThisTimer = () => {
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        deleteTimer(token, id)
+    }
+
 
     return (
         <div className={styles.box}>
@@ -205,10 +232,8 @@ export default function Timer(props: TimerProps) {
             <div>
                 <button onClick={reset}>Reset</button>
                 <Expand />
+                <button onClick={deleteThisTimer}>Delete</button>
             </div>
-
-
-
         </div>
     )
 }
