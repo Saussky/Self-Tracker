@@ -14,6 +14,7 @@ INSERT INTO users VALUES ('greg@ory.com', 'e9cee71ab932fde863338d08be4de9dfe39ea
 
 -- GENERAL
 -- Timers
+-- TODO(maybe?): Add the timer_data id to an array in timer_info so it has all the id's right there and you can tell frequency by counting? Might be excessive
 CREATE TABLE timer_info (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     user_email VARCHAR REFERENCES users(email),
@@ -50,6 +51,17 @@ CREATE TABLE counter_data (
 
 -- WORKOUT
 -- Gym
+CREATE TABLE gym_exercises (
+    user_email VARCHAR REFERENCES users(email),
+    compound VARCHAR[],
+    push VARCHAR[],
+    pull VARCHAR[],
+    legs VARCHAR[],
+    core VARCHAR[],
+    other VARCHAR[],
+    UNIQUE(user_email)
+)
+
 CREATE TABLE gym_sessions (
   id uuid DEFAULT gen_random_uuid()PRIMARY KEY,
   user_email VARCHAR REFERENCES users(email),

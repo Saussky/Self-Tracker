@@ -33,7 +33,6 @@ async function gymSession(req: NextApiRequest, res: NextApiResponse) {
     else if (req.method === 'GET') {
         return await getSessionByUserEmail(req, res)
     }
-
     else {
         return res.status(405).json({ message: 'Method not allowed' });
     }
