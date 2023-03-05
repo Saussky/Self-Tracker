@@ -29,6 +29,18 @@ export class CounterRepo {
     return this.pool.query(sql, params);
   }
 
+  async updateFrequency(infoId: string) {
+    const sql = "UPDATE counter_info SET frequency = frequency + 1 WHERE id = ($1)"
+    const params = [infoId]
+    await this.pool.query(sql, params)
+  }
+
+  async updateDateOfLastUse(infoId: string) {
+    const sql = 'UPDATE counter_info SET date_of_last_use = CURRENT_DATE WHERE id = ($1)'
+    const params = [infoId]
+    await this.pool.query(sql, params)
+  }
+
   // Enters in a counter to counter_data with the information from counter_info
   async startCounter(infoId: string): Promise<void> {
     const sql = "INSERT INTO counter_data (info_id) VALUES ($1) RETURNING id";

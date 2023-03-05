@@ -7,7 +7,7 @@ import parse from 'postgres-interval'
 // timer_info holds the core information of the timer to load, such as it's name and it stores the unique ID
 // timer_data stores the individual timer data for each session
 
-// TODO: date_of_last_use and frequency need to be updated in the timer_info when updating timer_data stuff, add a delete timer function
+// TODO: date_of_last_use and frequency need to be updated in the timer_info when updating timer_data stuff
 // TODO: get all timers from timer_data when passing in an ID 
 
 export class TimerRepo {
@@ -34,8 +34,23 @@ export class TimerRepo {
     return this.pool.query(sql, params);
   }
 
+  async updateFrequency(infoId: string) {
+    const sql = "UPDATE timer_info SET frequency = frequency + 1 WHERE id = ($1)"
+    const params = [infoId]
+    await this.pool.query(sql, params)
+  }
+
+  async updateDateOfLastUse(infoId: string) {
+    const sql = 'UPDATE timer_info SET date_of_last_use = CURRENT_DATE WHERE id = ($1)'
+    const params = [infoId]
+    await this.pool.query(sql, params)
+  }
+
   // Enters in a timer to timer_data which is now ready to count
   async startTimer(infoId: string): Promise<void> {
+    this.updateFrequency(infoId)
+    this.updateDateOfLastUse(infoId)
+
     const sql = "INSERT INTO timer_data (info_id) VALUES ($1) RETURNING id";
     const params = [infoId];
 
@@ -106,34 +121,3 @@ export class TimerRepo {
 
 const timers = new TimerRepo(new Pool(config.db));
 export default timers;
-
-/*
-  async getTimerById(id: string): Promise<QueryResult> {
-    const sql = 'SELECT * FROM timers WHERE id = $1';
-    const params = [id];
-
-    return this.pool.query(sql, params);
-  }
-
-  async updateTimer(
-    id: string,
-    name: string,
-    frequency: string,
-    dateOfLastUse: Date,
-    timeElapsedToday: number,
-    timeElapsedAll: number
-  ): Promise<QueryResult> {
-    const sql =
-      'UPDATE timers SET name=$2, frequency=$3, date_of_last_use=$4, time_elapsed_today=$5, time_elapsed_all=$6 WHERE id = $1';
-    const params = [id, name, frequency, dateOfLastUse, timeElapsedToday, timeElapsedAll];
-
-    return this.pool.query(sql, params);
-  }
-
-  async deleteTimer(id: string): Promise<QueryResult> {
-    const sql = 'DELETE FROM timers WHERE id = $1';
-    const params = [id];
-
-    return this.pool.query(sql, params);
-  }
-*/

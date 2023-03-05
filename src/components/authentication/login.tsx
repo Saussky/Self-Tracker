@@ -32,6 +32,7 @@ type LoginForm = {
 
 export default function LoginForm(props: any) {
     const { method, setMethod } = props;
+    const [error, setError] = useState<string>('')
 
     const [formState, setFormState] = useState<LoginForm>({
         email: '',
@@ -40,7 +41,7 @@ export default function LoginForm(props: any) {
 
     function handleFormChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
-        setFormState((prevState) => ({...prevState, [name]:value}))
+        setFormState((prevState) => ({ ...prevState, [name]: value }))
     }
 
     function handleMethodChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -51,7 +52,7 @@ export default function LoginForm(props: any) {
         event.preventDefault();
         const hashedPassword: string = createHash('sha256').update(formState.password).digest('hex');
         const email: string = formState.email
-        
+
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
@@ -60,13 +61,16 @@ export default function LoginForm(props: any) {
             body: JSON.stringify({ email, hashedPassword }),
         });
 
+        const data = await response.json()
+
         if (response.status === 200) {
             console.log('logged in')
-            const data = await response.json()
+
             document.cookie = `jwt=${data.token}; expires=${new Date(Date.now() + 3600000).toUTCString()}; path=/`;
             router.push('/');
         } else {
-            const data = await response.json();
+            console.log('login failed')
+            setError('incorrect email or password')
             console.log(data.message);
         }
     };
@@ -86,7 +90,7 @@ export default function LoginForm(props: any) {
             </label>
 
             {method === 'signup' && <SignUp />}
-            
+
             <div className={styles.method}>
                 <label>
                     <input
@@ -111,6 +115,12 @@ export default function LoginForm(props: any) {
             <button type="submit" className={styles.submitButton}>
                 {method === 'login' ? 'Log in' : 'Sign up'}
             </button>
+            {error && (
+                <div>
+                    {error}
+                </div>
+            )}
         </form>
+
     );
 }
