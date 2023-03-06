@@ -53,14 +53,14 @@ CREATE TABLE counter_data (
 -- Gym
 CREATE TABLE gym_exercises (
     user_email VARCHAR REFERENCES users(email),
-    compound VARCHAR[],
+    compound VARCHAR[] DEFAULT ARRAY['squats', 'deadlifts', 'bench press', 'overhead press'],
     push VARCHAR[],
     pull VARCHAR[],
     legs VARCHAR[],
     core VARCHAR[],
     other VARCHAR[],
     UNIQUE(user_email)
-)
+);
 
 CREATE TABLE gym_sessions (
   id uuid DEFAULT gen_random_uuid()PRIMARY KEY,

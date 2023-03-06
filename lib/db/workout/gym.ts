@@ -36,15 +36,42 @@ export class GymRepo {
     }
 
     async getSession(sessionId: string): Promise<QueryResult> {
-        return this.pool.query('SELECT * FROM sessions WHERE id = $1', [sessionId]);
+        return await this.pool.query('SELECT * FROM sessions WHERE id = $1', [sessionId]);
     }
 
     async getSessionsByUserEmail(userEmail: string): Promise<QueryResult> {
-        return this.pool.query('SELECT * FROM sessions WHERE user_email = $1', [userEmail]);
+        return await this.pool.query('SELECT * FROM sessions WHERE user_email = $1', [userEmail]);
     }
 
     async getSetsBySessionId(sessionId: string): Promise<QueryResult> {
-        return this.pool.query('SELECT * FROM sets WHERE session_id = $1', [sessionId]);
+        return await this.pool.query('SELECT * FROM sets WHERE session_id = $1', [sessionId]);
+    }
+
+    async getExercises(userEmail: string) {
+        const sql = `
+        SELECT unnest(compound) AS compound_exercise, 
+               unnest(push) AS push_exercise, 
+               unnest(pull) AS pull_exercise, 
+               unnest(legs) AS legs_exercise, 
+               unnest(core) AS core_exercise, 
+               unnest(other) AS other_exercise
+        FROM gym_exercises 
+        WHERE user_email = ($1)`;
+        const params = [userEmail]
+        return await this.pool.query(sql, params);
+    }
+
+    async addExercise(userEmail: string, category: string, exercise: string) {
+        console.log('ccc', category)
+        const sql = `UPDATE gym_exercises SET ${category} = array_append(${category}, ($1)) WHERE user_email = ($2)`
+        const params = [exercise, userEmail]
+        return await this.pool.query(sql, params)
+    }
+
+    async deleteExercise(userEmail: string, category: string, exercise: string) {
+        const sql = `UPDATE gym_exercises SET ($1) = array_remove(($1), ($2)) WHERE user_email = ($3)`
+        const params = [category, exercise, userEmail]
+        return await this.pool.query(sql, params)
     }
 }
 
