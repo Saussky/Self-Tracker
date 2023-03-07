@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../../styles/workout/Gym.module.css"
 
+//TODO: Check if adding new exercise is a duplicate?
 interface ExerciseProps {
     selectedCategory: string | undefined;
     exercise: string | undefined;
@@ -18,8 +19,6 @@ const sampleExercise: string[] = [
 export function Exercise(props: ExerciseProps) {
     const { selectedCategory, exercise, setExercise } = props
     const [exerciseOptions, setExerciseOptions] = useState<string[]>(sampleExercise)
-
-
 
     async function addExercise() {
         const newExercise = window.prompt('Enter an exercise name:');
@@ -42,7 +41,7 @@ export function Exercise(props: ExerciseProps) {
                 console.log('bazinga')
                 setExercise(newExercise);
             } else {
-                console.error('Error adding exercise:', response.statusText);
+                console.error('Error adding exercise:', response.status);
             }
         }
 
