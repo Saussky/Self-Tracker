@@ -49,15 +49,13 @@ export class GymRepo {
 
     async getExercises(userEmail: string) {
         const sql = `
-        SELECT unnest(compound) AS compound_exercise, 
-               unnest(push) AS push_exercise, 
-               unnest(pull) AS pull_exercise, 
-               unnest(legs) AS legs_exercise, 
-               unnest(core) AS core_exercise, 
-               unnest(other) AS other_exercise
-        FROM gym_exercises 
-        WHERE user_email = ($1)`;
-        const params = [userEmail]
+          SELECT array(SELECT unnest(compound) FROM gym_exercises WHERE user_email = ($1)) AS compound_exercises,
+                 array(SELECT unnest(push) FROM gym_exercises WHERE user_email = ($1)) AS push_exercises,
+                 array(SELECT unnest(pull) FROM gym_exercises WHERE user_email = ($1)) AS pull_exercises,
+                 array(SELECT unnest(legs) FROM gym_exercises WHERE user_email = ($1)) AS legs_exercises,
+                 array(SELECT unnest(core) FROM gym_exercises WHERE user_email = ($1)) AS core_exercises,
+                 array(SELECT unnest(other) FROM gym_exercises WHERE user_email = ($1)) AS other_exercises`;
+        const params = [userEmail];
         return await this.pool.query(sql, params);
     }
 
@@ -69,8 +67,8 @@ export class GymRepo {
     }
 
     async deleteExercise(userEmail: string, category: string, exercise: string) {
-        const sql = `UPDATE gym_exercises SET ($1) = array_remove(($1), ($2)) WHERE user_email = ($3)`
-        const params = [category, exercise, userEmail]
+        const sql = `UPDATE gym_exercises SET ${category} = array_remove(${category}, ($1)) WHERE user_email = ($2)`
+        const params = [exercise, userEmail]
         return await this.pool.query(sql, params)
     }
 }

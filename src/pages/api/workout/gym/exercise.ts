@@ -6,7 +6,6 @@ async function getExercises(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { email } = req.user;
         const { rows } = await gym.getExercises(email);
-        console.log('aaa')
         return res.status(200).json({ rows });
     } catch (error) {
         console.error(error);
@@ -18,7 +17,7 @@ async function addExercise(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { email } = req.user;
         const { category, exercise } = req.body
-        const result = await gym.addExercise(email, category, exercise);
+        await gym.addExercise(email, category, exercise);
         return res.status(200).json({ message: 'Exercise added' });
     } catch (error) {
         console.error(error);
@@ -30,7 +29,7 @@ async function deleteExercise(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { email } = req.user;
         const { category, exercise } = req.body
-        const result = await gym.deleteExercise(email, category, exercise);
+        await gym.deleteExercise(email, category, exercise);
         return res.status(200).json({ message: 'Exercise added' });
     } catch (error) {
         console.error(error);
@@ -40,7 +39,6 @@ async function deleteExercise(req: NextApiRequest, res: NextApiResponse) {
 
 async function exercise(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
-        console.log('oi')
         return await getExercises(req, res)
     }
     else if (req.method === 'POST') {
